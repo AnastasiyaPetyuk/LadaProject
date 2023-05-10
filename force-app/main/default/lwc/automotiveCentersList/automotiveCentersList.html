@@ -1,0 +1,18 @@
+<template>
+    <lightning-card title="Automotive Centers">
+        
+        <template if:true={hasResults}>
+            <ul class="slds-list_ordered">
+                <template for:each={automotiveCenters} for:item="center">
+                    <p key={center.Id}><b>{center.City__c}, {center.Name}</b><br>
+                        {center.Type__c}<br> 
+                        {center.Phone__c}<br> 
+                        {center.Working_Hours__c}<br> 
+                        <br>
+                    </p>
+                </template>
+            </ul>
+        </template>
+        
+    </lightning-card>
+</template>
