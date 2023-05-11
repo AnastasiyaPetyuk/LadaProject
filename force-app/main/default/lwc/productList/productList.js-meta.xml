@@ -9,4 +9,9 @@
         <target>lightningCommunity__Page</target>
         <target>lightningCommunity__Default</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="Id" type="String" label="Record Id" default="{!Id}"/>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

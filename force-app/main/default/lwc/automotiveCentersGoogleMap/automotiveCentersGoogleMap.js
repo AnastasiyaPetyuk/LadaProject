@@ -17,7 +17,7 @@ export default class AutomotiveCentersGoogleMap extends LightningElement {
                     title: `LADA ${center.Type__c}, ${center.Name}`,
                     description: `${center.Phone__c}, 
                                   ${center.Working_Hours__c} `,
-                    icon: 'utility:car'
+                    icon: 'utility:travel_and_places'
                 };
             });
         } else if (error) {
