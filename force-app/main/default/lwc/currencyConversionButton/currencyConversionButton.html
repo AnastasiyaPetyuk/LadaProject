@@ -1,0 +1,10 @@
+<template>
+    <div>
+        <h1>Currency Conversion</h1>
+        <p>Select a currency:</p>
+        <lightning-button label="BY" variant="brand" onclick={handleCurrencySelection} data-currency-code="BY"></lightning-button>
+        <lightning-button label="USD" variant="brand" onclick={handleCurrencySelection} data-currency-code="USD"></lightning-button>
+        <p>Converted amount: {convertedAmount}</p>
+        <lightning-button label="Convert" variant="brand" onclick={handleConversion}></lightning-button>
+    </div>
+</template>

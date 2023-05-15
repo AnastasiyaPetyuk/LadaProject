@@ -1,7 +1,11 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import getAllAutomotiveCenters from '@salesforce/apex/AutomotiveCenterController.getAllAutomotiveCenters';
+import AutomotiveCenters from '@salesforce/label/c.AutomotiveCenters';
 
 export default class AutomotiveCentersList extends LightningElement {
+    label = {
+        AutomotiveCenters
+    };
     @wire(getAllAutomotiveCenters) automotiveCenters;
     error;
     connectedCallback() {

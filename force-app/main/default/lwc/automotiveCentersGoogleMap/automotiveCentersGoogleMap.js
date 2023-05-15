@@ -1,9 +1,12 @@
 import { LightningElement, wire } from 'lwc';
 import getAllAutomotiveCenters from '@salesforce/apex/AutomotiveCenterController.getAllAutomotiveCenters';
+import AutomotiveCenters from '@salesforce/label/c.AutomotiveCenters';
 
 export default class AutomotiveCentersGoogleMap extends LightningElement {
+    label = {      
+        AutomotiveCenters
+    };
     mapMarkers = [];
- 
     @wire(getAllAutomotiveCenters)
     wiredAutomotiveCenters({ error, data }) {
         if (data) {
@@ -24,5 +27,4 @@ export default class AutomotiveCentersGoogleMap extends LightningElement {
             this.error = error;
         }
     }
-
 }

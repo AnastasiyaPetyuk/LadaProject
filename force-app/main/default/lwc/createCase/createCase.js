@@ -1,23 +1,28 @@
-import { LightningElement, track } from 'lwc';
-import { createRecord } from 'lightning/uiRecordApi';
-import CASE_OBJECT from '@salesforce/schema/Case';
-import TOPIC_FIELD from '@salesforce/schema/Case.Topic__c';
-import NAME_FIELD from '@salesforce/schema/Case.Name__c';
-import PHONE_FIELD from '@salesforce/schema/Case.Phone__c';
-import EMAIL_FIELD from '@salesforce/schema/Case.Email__c';
-import DESCRIPTION_FIELD from '@salesforce/schema/Case.Description';
+import { LightningElement, track} from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import createCase from '@salesforce/apex/CaseController.createCase';
+import AskQuestion from '@salesforce/label/c.AskQuestion';
+import YourName from '@salesforce/label/c.YourName';
+import YourPhone from '@salesforce/label/c.YourPhone';
+import YourEmail from '@salesforce/label/c.YourEmail';
+import YourQuestion from '@salesforce/label/c.YourQuestion';
+import Submit from '@salesforce/label/c.Submit';
+
 
 export default class CreateCase extends LightningElement {
-    @track topic;
+
+    label = {   
+        AskQuestion,
+        YourName,
+        YourPhone,
+        YourEmail,
+        YourQuestion,
+        Submit
+    };
     @track name;
-    @track phone;
-    @track email;
-    @track description;
-
-    handleTopicChange(event) {
-        this.topic = event.target.value;
-    }
-
+    @track email; 
+    @track phone; 
+    @track question; 
 
     handleNameChange(event) {
         this.name = event.target.value;
@@ -31,25 +36,35 @@ export default class CreateCase extends LightningElement {
         this.email = event.target.value;
     }
 
-    handleDescriptionChange(event) {
-        this.description = event.target.value;
+    handleQuestionChange(event) {
+        this.question = event.target.value;
     }
 
-    createCase() {
-        const fields = {};
-        fields[TOPIC_FIELD.fieldApiName] = this.topic;
-        fields[NAME_FIELD.fieldApiName] = this.name;
-        fields[PHONE_FIELD.fieldApiName] = this.phone;
-        fields[EMAIL_FIELD.fieldApiName] = this.email;
-        fields[DESCRIPTION_FIELD.fieldApiName] = this.description;
-
-        const recordInput = { apiName: CASE_OBJECT.objectApiName, fields };
-        createRecord(recordInput)
-            .then(caseRecord => {
-                console.log('Case record created:', caseRecord.id);
+    handleCreateCase() {
+        createCase({ name: this.name, email: this.email, phone: this.phone, question: this.question })
+            .then(() => {  
+                this.name = '';
+                this.phone = '';
+                this.email = '';
+                this.question = '';             
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Question created',
+                        variant: 'success',
+                    }),
+                );
             })
-            .catch(error => {
-                console.error('Error creating case record:', error);
+            .catch (error => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: error.body.message, //'Error creating record',
+                        message: error.body.message,//error.body.output.fieldErrors,
+                        variant: 'error',
+                    }),
+                );
             });
     }
 }
+
+

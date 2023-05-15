@@ -5,7 +5,6 @@ public with sharing class ProductController {
             SELECT Id, 
                 Name, 
                 ProductCode, 
-                Edition__c, 
                 Year__c, 
                 Image_URL__c, 
                 Description 

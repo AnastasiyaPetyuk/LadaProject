@@ -1,0 +1,16 @@
+<template>
+    <lightning-modal-header label={headerText}></lightning-modal-header>
+    <lightning-modal-body>
+        <div class="slds-media__body" style="text-align: center; font-size: 24px">
+            <p class="slds-truncate" style="font-weight: bold">{carName}</p>
+            <p class="slds-truncate">{carYear}</p>
+            <p class="slds-truncate">{carDescription}</p>
+        </div>
+        <div class="slds-media__figure" style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
+            <img src={carImage} alt={carName} />
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="OK" onclick={handleOkay}></lightning-button>
+    </lightning-modal-footer>
+</template>

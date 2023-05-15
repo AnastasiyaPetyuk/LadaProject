@@ -1,33 +1,26 @@
 <template>
-    <lightning-card title="Product List">
-        <template if:true={products.data}>
-            <template for:each={products.data} for:item="product">
-                <div key={product.Id}>
-                    <p><a href="#" onclick={openModal}>{product.Name}</a></p>
-                </div>
-            </template>
+    <lightning-card title={label.AvailableCarModels}>
+      <div class="slds-var-m-around_medium">
+        <template if:true={productData}>
+            <ul class="slds-grid slds-wrap">
+                <template for:each={productData} for:item="product">
+                    <li key={product.id} >
+                        <div class="slds-box slds-box_link">
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <img src={product.image_url} alt={product.name} />
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-text-heading_small">{product.name}</h2>
+                                    <p class="slds-truncate">{product.year}</p>
+                                    <lightning-button variant="brand" onclick={handleShowModal} data-id={product.id} label={label.ViewDetails}></lightning-button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>  
         </template>
+      </div>
     </lightning-card>
-
-    <template if:true={showModal}>
-        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
-                 class="slds-modal slds-fade-in-open">
-            <div class="slds-modal__container">
-                <header class="slds-modal__header">
-                    <h2 id="modal-heading-01" class="slds-text-heading_medium">Product Description</h2>
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                            onclick={closeModal}>
-                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                        </svg>
-                        <span class="slds-assistive-text">Close</span>
-                    </button>
-                </header>
-                <div class="slds-modal__content slds-p-around_medium">
-                    <lightning-formatted-text value={selectedProduct.Description}></lightning-formatted-text>
-                </div>
-            </div>
-            <div class="slds-backdrop slds-backdrop_open"></div>
-        </section>
-    </template>
-</template>
+  </template>

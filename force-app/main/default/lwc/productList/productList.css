@@ -1,3 +1,4 @@
-.slds-modal__content {
-    max-height: 80vh;
+.slds-box_link .slds-media__figure img {
+    height: 100px;
+    width: 170px;
 }
