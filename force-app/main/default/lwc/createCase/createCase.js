@@ -58,8 +58,8 @@ export default class CreateCase extends LightningElement {
             .catch (error => {
                 this.dispatchEvent(
                     new ShowToastEvent({
-                        title: error.body.message, //'Error creating record',
-                        message: error.body.message,//error.body.output.fieldErrors,
+                        title: error.body.message, 
+                        message: error.body.message,
                         variant: 'error',
                     }),
                 );
