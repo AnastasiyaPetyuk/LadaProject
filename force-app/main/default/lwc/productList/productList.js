@@ -34,6 +34,9 @@ export default class ProductList extends LightningElement {
                 code: product.ProductCode,
                 year: product.Year__c,
                 image_url: product.Image_URL__c,
+                body: product.Body__c,
+                checkpoint: product.Checkpoint__c,
+                driveUnit: product.DriveUnit__c,
                 description: product.Description
             }));
         } else if (error) {
@@ -52,6 +55,9 @@ export default class ProductList extends LightningElement {
             carName: this.selectedProduct.name, 
             carYear: this.selectedProduct.year,
             carImage: this.selectedProduct.image_url,
+            carBody: this.selectedProduct.body,
+            carCheckpoint: this.selectedProduct.checkpoint,
+            carDriveUnit: this.selectedProduct.driveUnit,
             carDescription: this.selectedProduct.description
         });
     }

@@ -9,7 +9,5 @@ export default class CurrencyConversionButton extends LightningElement {
         {label: 'USD', value: 'USD'},
         {label: 'BYN', value: 'BYN'}
     ]
-    handleCurrencyChange() {
 
-    }
 }
