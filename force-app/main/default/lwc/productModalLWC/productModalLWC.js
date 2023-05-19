@@ -1,6 +1,8 @@
-import { api } from 'lwc';
+import { api, wire, track } from 'lwc';
 import LightningModal from 'lightning/modal';
 import generatePDF from '@salesforce/apex/PDFController.generatePDF';
+import { subscribe, MessageContext } from 'lightning/messageService';
+import CURRENCY_UPDATED_CHANNEL from '@salesforce/messageChannel/Currency_Updated__c';
 
 export default class ProductModalLWC extends LightningModal {
     @api content;
@@ -12,11 +14,39 @@ export default class ProductModalLWC extends LightningModal {
     @api carBody;
     @api carCheckpoint;
     @api carDriveUnit;
+    subscription = null;
     selectedCurrency;
 
 
+    @wire(MessageContext)
+    messageContext;
+    subscribeToMessageChannel() {
+        this.subscription = subscribe(
+        this.messageContext,
+        CURRENCY_UPDATED_CHANNEL,
+        (message) => this.handleMessage(message)
+        );
+
+    }
+
+    handleMessage(message) {
+        if(message.data.currency === 'BYN') {
+            this.selectedCurrency = 'BYN';
+        } else {
+            this.selectedCurrency = 'USD';
+        }
+      }
+    
+    connectedCallback() {
+        this.subscribeToMessageChannel();
+    }
+
+
+    handleOkay() {
+        this.close('okay');
+    }
+
     handleGeneratePDF() {
-        console.log("download pdf");
         generatePDF({ productName: this.carName, selectedCurrency: this.selectedCurrency})
         .then((result) => {
             const pdfBlob = this.base64ToBlob(result);
@@ -52,17 +82,5 @@ export default class ProductModalLWC extends LightningModal {
         }
     
         return outputArray;
-    }
-
-    handleOkay() {
-        this.close('okay');
-    }
-
-    handleTestDrive() {
-
-    }
-
-    handleBuyAuto() {
-
     }
 }
