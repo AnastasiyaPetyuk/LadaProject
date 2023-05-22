@@ -9,7 +9,7 @@ public with sharing class CurrencyConversionFuture {
     HttpResponse response = new Http().send(request);
 
     if (response.getStatusCode() == 200) {
-      List<Object> exchangeRates = (List<Object>) JSON.deserializeUntyped(
+        List<Object> exchangeRates = (List<Object>) JSON.deserializeUntyped(
         response.getBody()
       );
 

@@ -13,7 +13,9 @@
                                 <div class="slds-media__body">
                                     <h2 class="slds-text-heading_small">{product.name}</h2>
                                     <p class="slds-truncate">{product.year}</p>
-                                    <lightning-button variant="brand" onclick={handleShowModal} data-id={product.id} label={label.ViewDetails}></lightning-button>
+                                    <lightning-button variant="brand" onclick={handleShowModal} data-id={product.id} label={label.ViewDetails} style="margin-right: 5px"></lightning-button>
+                                    <lightning-button variant="brand" onclick={handleOrderTestDrive} data-id={product.id} label="Order Test-Drive" style="margin: 5px"></lightning-button>
+                                    <lightning-button variant="brand" onclick={handleBuy} data-id={product.id} label="Buy" style="margin: 5px"></lightning-button>
                                 </div>
                             </div>
                         </div>

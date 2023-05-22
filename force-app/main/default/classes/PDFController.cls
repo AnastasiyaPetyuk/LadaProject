@@ -1,9 +1,6 @@
 public with sharing class PDFController {
   @AuraEnabled
-  public static String generatePDF(
-    String productName,
-    String selectedCurrency
-  ) {
+  public static String generatePDF(String productName, String selectedCurrency) {
     Blob pdfBlob = generatePDFBlob(selectedCurrency, productName);
     String base64String = EncodingUtil.base64Encode(pdfBlob);
     return base64String;
@@ -11,27 +8,26 @@ public with sharing class PDFController {
 
   private static Blob generatePDFBlob(String selectedCurrency, String productName) {
     String pdfContent = 'CAR DETAILS AND PRICES <br/><br/>';
-
-    Product2 selectedProduct = ProductDataRetriever.getProductByName(
-      productname
-    );
-
+    Product2 selectedProduct = ProductDataRetriever.getProductByName(productname);
     String prices = '';
+
+    Double currencyCoefficient = 1;
+    if(selectedCurrency == 'BYN') {
+      Cur_OfficialRate_USD__c curOfficialRateUSD = Cur_OfficialRate_USD__c.getOrgDefaults();
+      currencyCoefficient = curOfficialRateUSD.value__c;
+    }
+
     List<PricebookEntry> priceBooks = PriceBookEntryDataRetriever.getAllPriceBookEntriesByProductName(productName);
     for(PricebookEntry priceBook : priceBooks) {
-      prices +=  priceBook.PriceBook2.Name + ': ' + priceBook.UnitPrice + ' ' + selectedCurrency + '<br/>';
+      prices +=  priceBook.PriceBook2.Name + ': ' + (priceBook.UnitPrice * currencyCoefficient) + ' ' + selectedCurrency + '<br/>';
     }
 
     pdfContent +=
-      selectedProduct.Name +
-      '<br/><br/>' +
-      selectedProduct.Year__c +
-      '<br/>Checkpoint: ' +
-      selectedProduct.Checkpoint__c +
-      '<br/>Drive Unit: ' +
-      selectedProduct.DriveUnit__c +
-      '<br/>Car Body: ' +
-      selectedProduct.Body__C +
+      selectedProduct.Name + '<br/><br/>' +
+      selectedProduct.Year__c + 
+      '<br/>Checkpoint: ' + selectedProduct.Checkpoint__c +
+      '<br/>Drive Unit: ' + selectedProduct.DriveUnit__c +
+      '<br/>Car Body: ' + selectedProduct.Body__C +
       '<br/><br/>' +
       selectedProduct.Description +
       '<br/><br/>' +

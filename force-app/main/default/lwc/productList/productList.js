@@ -1,23 +1,23 @@
-import { LightningElement, wire} from 'lwc';
-import productModalLWC from 'c/productModalLWC';
+import { LightningElement, wire, api} from 'lwc';
 import getProductList from '@salesforce/apex/ProductController.getProductList';
 import AvailableCarModels from '@salesforce/label/c.availableCarModels';
 import ViewDetails from '@salesforce/label/c.viewDetails';
 import CarDetails from '@salesforce/label/c.carDetails';
+import productDetails from 'c/productDetails';
+import orderTestDriveForm from 'c/orderTestDriveForm';
+import buyAutoForm from 'c/buyAutoForm';
 
 
 export default class ProductList extends LightningElement {
-    showModal = true;
-    result;
     label = {
         AvailableCarModels,
         ViewDetails,
         CarDetails
     };
 
+    result;
     productData;
     selectedProduct;
-    info = "";
 
     columns = [
         { label: 'Name', fieldName: 'name' },
@@ -44,12 +44,10 @@ export default class ProductList extends LightningElement {
         }
     }
 
-
-
     async handleShowModal(event) {
         const productId = event.target.dataset.id;
         this.selectedProduct = this.productData.find(product => product.id === productId);
-        this.result = await productModalLWC.open({
+        this.result = await productDetails.open({
             size: 'large',
             headerText: CarDetails,
             carName: this.selectedProduct.name, 
@@ -58,7 +56,24 @@ export default class ProductList extends LightningElement {
             carBody: this.selectedProduct.body,
             carCheckpoint: this.selectedProduct.checkpoint,
             carDriveUnit: this.selectedProduct.driveUnit,
-            carDescription: this.selectedProduct.description
+            carDescription: this.selectedProduct.description,
+        });
+    }
+
+
+    async handleOrderTestDrive(event) {
+        const productId = event.target.dataset.id;
+        this.selectedProduct = this.productData.find(product => product.id === productId);
+        this.result = await orderTestDriveForm.open({
+            carName: this.selectedProduct.name, 
+        });
+    }
+
+    async handleBuy(event) {
+        const productId = event.target.dataset.id;
+        this.selectedProduct = this.productData.find(product => product.id === productId);
+        this.result = await buyAutoForm.open({
+            carName: this.selectedProduct.name, 
         });
     }
 }

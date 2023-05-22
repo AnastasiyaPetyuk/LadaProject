@@ -1,10 +1,10 @@
-import { api, wire, track } from 'lwc';
+import { api, wire} from 'lwc';
 import LightningModal from 'lightning/modal';
 import generatePDF from '@salesforce/apex/PDFController.generatePDF';
-import { subscribe, MessageContext } from 'lightning/messageService';
+import { subscribe, MessageContext, APPLICATION_SCOPE} from 'lightning/messageService';
 import CURRENCY_UPDATED_CHANNEL from '@salesforce/messageChannel/Currency_Updated__c';
 
-export default class ProductModalLWC extends LightningModal {
+export default class ProductDetails extends LightningModal {
     @api content;
     @api headerText;
     @api carName;
@@ -14,46 +14,34 @@ export default class ProductModalLWC extends LightningModal {
     @api carBody;
     @api carCheckpoint;
     @api carDriveUnit;
+    selectedCurrency = 'USD';
     subscription = null;
-    selectedCurrency;
-
 
     @wire(MessageContext)
     messageContext;
     subscribeToMessageChannel() {
-        this.subscription = subscribe(
+      this.subscription = subscribe(
         this.messageContext,
         CURRENCY_UPDATED_CHANNEL,
-        (message) => this.handleMessage(message)
-        );
-
+        (message) => this.handleMessage(message),
+        { scope: APPLICATION_SCOPE }
+      );
     }
-
     handleMessage(message) {
-        if(message.data.currency === 'BYN') {
-            this.selectedCurrency = 'BYN';
-        } else {
-            this.selectedCurrency = 'USD';
-        }
-      }
-    
-    connectedCallback() {
-        this.subscribeToMessageChannel();
+      this.selectedCurrency = message.currency;
     }
-
-
-    handleOkay() {
-        this.close('okay');
+    connectedCallback() {
+      this.subscribeToMessageChannel();
     }
 
     handleGeneratePDF() {
         generatePDF({ productName: this.carName, selectedCurrency: this.selectedCurrency})
         .then((result) => {
+            console.log(this.selectedCurrency + "currency details");
             const pdfBlob = this.base64ToBlob(result);
             const downloadLink = document.createElement('a');
             downloadLink.href = URL.createObjectURL(pdfBlob);
             downloadLink.download = 'carPrices.pdf';
-
             downloadLink.click();
         })
         .catch((error) => {

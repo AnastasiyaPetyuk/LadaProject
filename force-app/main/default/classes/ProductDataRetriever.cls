@@ -26,7 +26,7 @@ public with sharing class ProductDataRetriever {
         Body__c,
         Description
       FROM Product2 
-      WHERE Product2.Name = :name
+      WHERE Product2.Name = :name and IsActive = true
       LIMIT 1
     ];  
   }
