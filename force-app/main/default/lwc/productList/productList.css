@@ -2,3 +2,16 @@
     height: 100px;
     width: 170px;
 }
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+}
+.my-brand {
+    --sds-c-button-brand-color-background: rgb(92, 126, 236);
+}
+.my-product-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  

@@ -1,18 +1,23 @@
-import { LightningElement, wire, api} from 'lwc';
+import { LightningElement, wire} from 'lwc';
 import getProductList from '@salesforce/apex/ProductController.getProductList';
 import AvailableCarModels from '@salesforce/label/c.availableCarModels';
 import ViewDetails from '@salesforce/label/c.viewDetails';
 import CarDetails from '@salesforce/label/c.carDetails';
+import OrderTestDrive from '@salesforce/label/c.orderTestDrive'
+import Buy from '@salesforce/label/c.buy';
 import productDetails from 'c/productDetails';
 import orderTestDriveForm from 'c/orderTestDriveForm';
 import buyAutoForm from 'c/buyAutoForm';
-
+import { registerListener, unregisterAllListeners } from 'c/pubSubConnector';
+import { CurrentPageReference } from 'lightning/navigation';
 
 export default class ProductList extends LightningElement {
     label = {
         AvailableCarModels,
         ViewDetails,
-        CarDetails
+        CarDetails,
+        OrderTestDrive,
+        Buy
     };
 
     result;
@@ -44,7 +49,24 @@ export default class ProductList extends LightningElement {
         }
     }
 
+    selectedCurrency = '';
+    @wire(CurrentPageReference) pageRef;
+      
+    connectedCallback() {
+      registerListener('EventFromPub', this.setCaptureText, this);
+    }
+  
+    disconnectedCallback() {
+      unregisterAllListeners(this);
+    }
+  
+    setCaptureText(objPayload) {
+        this.selectedCurrency = objPayload;
+    }
+      
+
     async handleShowModal(event) {
+        console.log('selectedCurrency handle modal: ' + this.selectedCurrency);
         const productId = event.target.dataset.id;
         this.selectedProduct = this.productData.find(product => product.id === productId);
         this.result = await productDetails.open({
@@ -57,6 +79,7 @@ export default class ProductList extends LightningElement {
             carCheckpoint: this.selectedProduct.checkpoint,
             carDriveUnit: this.selectedProduct.driveUnit,
             carDescription: this.selectedProduct.description,
+            currency: this.selectedCurrency
         });
     }
 

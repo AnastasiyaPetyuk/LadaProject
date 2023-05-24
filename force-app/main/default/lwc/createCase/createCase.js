@@ -41,7 +41,7 @@ export default class CreateCase extends LightningElement {
     }
 
     handleCreateCase() {
-        createCase({ name: this.name, email: this.email, phone: this.phone, question: this.question })
+        createCase({ name: this.name, subject: 'Q&A', email: this.email, phone: this.phone, question: this.question })
             .then(() => {  
                 this.name = '';
                 this.phone = '';

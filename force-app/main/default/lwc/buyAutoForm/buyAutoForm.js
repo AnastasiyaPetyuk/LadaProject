@@ -1,26 +1,24 @@
 import { api, track } from 'lwc';
 import LightningModal from 'lightning/modal';
-import createContactWithProductOpportunity from '@salesforce/apex/ContactController.createContactWithProductOpportunity';
+import createCase from '@salesforce/apex/CaseController.createCase';
 
 export default class BuyAutoForm extends LightningModal {
     @api carName;
 
-    @track lastName;
-    @track firstName;
+    @track name
     @track email; 
     @track phone;
     @track carEquipment;
 
     @track currencyOptions = [
         {label: 'Comfort', value: 'Comfort'},
-        {label: 'Standart', value: 'Standart'}
+        {label: 'Standart', value: 'Standart'},
+        {label: 'Special Editor', value: 'Special Editor'},
+        {label: 'Luxe Prestige', value: 'Luxe Prestige'}
     ]
 
-    handleLastNameChange(event) {
-        this.lastName = event.target.value;
-    }
-    handleFirstNameChange(event) {
-        this.firstName = event.target.value;
+    handleNameChange(event) {
+        this.name = event.target.value;
     }
 
     handlePhoneChange(event) {
@@ -36,23 +34,17 @@ export default class BuyAutoForm extends LightningModal {
     }
 
     handleSave() {
-        createContactWithProductOpportunity({
-            lastName: this.lastName,
-            firstName: this.firstName,
-            email: this.email,
-            phone: this.phone,
-            carName: this.carName,
-            carEquipment: this.carEquipment 
-        })
-            .then(() => {
-                this.lastName = '';
-                this.firstName = '';
-                this.email = '';
+        createCase({ name: this.name, subject: 'BUY', email: this.email, phone: this.phone, question: this.carName + ', ' + this.carEquipment})
+            .then(() => {  
+                this.name = '';
                 this.phone = '';
-                console.log("1 OK we inside func");
+                this.email = '';
+                this.question = '';             
             })
-            .catch(error => {
-                console.error('Error creating request:', error);
+            .catch (error => {
+                console.log(error);
             });
-    } 
+
+            this.close('okay');
+    }
 }

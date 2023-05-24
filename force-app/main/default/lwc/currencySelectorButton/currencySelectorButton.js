@@ -1,22 +1,23 @@
-import { LightningElement, track, wire} from 'lwc';
-import { publish, MessageContext } from 'lightning/messageService';
-import CURRENCY_UPDATED_CHANNEL from '@salesforce/messageChannel/Currency_Updated__c';
+import { LightningElement, wire} from 'lwc';
+import SelectCurrency from '@salesforce/label/c.Select_Currency';
+import { fireEvent } from 'c/pubSubConnector';
+import { CurrentPageReference } from 'lightning/navigation';
 
 export default class CurrencyConversionButton extends LightningElement {
-    
+    label = {
+        SelectCurrency
+    }
     get currencyOptions() {
         return [
             {label: 'USD', value: 'USD'},
             {label: 'BYN', value: 'BYN'}
         ];
     }
+    
+    currency = '';
+    @wire(CurrentPageReference) pageRef;
 
-    @wire(MessageContext)
-    messageContext;
     handleChangeCurrency(event) {
-        const payload = { 
-        currency: event.target.value
-        };
-        publish(this.messageContext, CURRENCY_UPDATED_CHANNEL, payload);
-    }      
+        fireEvent(this.pageRef, 'EventFromPub', event.target.value);
+    }
 }

@@ -41,6 +41,8 @@ export default class OrderTestDriveForm extends LightningModal {
             .catch(error => {
                 console.error('Error creating request:', error);
             });
+
+            this.close('okay');
     }    
 
 }

@@ -2,14 +2,17 @@
     <lightning-card title={label.AutomotiveCenters}>
         
         <template if:true={hasResults}>
-            <ul class="slds-list_ordered">
+            <ul class="slds-grid slds-wrap">
                 <template for:each={automotiveCenters} for:item="center">
-                    <p key={center.Id}><b>{center.City__c}, {center.Name}</b><br>
-                        {center.Type__c}<br> 
-                        {center.Phone__c}<br> 
-                        {center.Working_Hours__c}<br> 
-                        <br>
-                    </p>
+                    <li key={center.id} >
+                        <div class="slds-box slds-box_link">
+                            <b>{center.City__c}, {center.Name}</b><br>
+                            {center.Type__c}<br> 
+                            {center.Phone__c}<br> 
+                            {center.Working_Hours__c}<br> 
+                            <br>
+                        </div>
+                    </li>
                 </template>
             </ul>
         </template>

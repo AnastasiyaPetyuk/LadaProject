@@ -13,8 +13,8 @@ public with sharing class PDFController {
 
     Double currencyCoefficient = 1;
     if(selectedCurrency == 'BYN') {
-      Cur_OfficialRate_USD__c curOfficialRateUSD = Cur_OfficialRate_USD__c.getOrgDefaults();
-      currencyCoefficient = curOfficialRateUSD.value__c;
+      Cur_OfficialRate_USD__c mySetting = Cur_OfficialRate_USD__c.getInstance();
+      currencyCoefficient = mySetting.value__c;
     }
 
     List<PricebookEntry> priceBooks = PriceBookEntryDataRetriever.getAllPriceBookEntriesByProductName(productName);
