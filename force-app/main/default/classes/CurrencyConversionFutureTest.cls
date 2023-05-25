@@ -2,7 +2,7 @@
 private class CurrencyConversionFutureTest {
   @isTest
   static void testFetchAndStoreExchangeRates() {
-    String mockResponse = '{"Cur_Abbreviation": "USD","Cur_OfficialRate": 2.0}';
+    String mockResponse = '{"Cur_Abbreviation": "USD","Cur_OfficialRate": "2.0"}';
     Test.setMock(
       HttpCalloutMock.class,
       new MockHttpResponse('200', mockResponse)
@@ -12,8 +12,13 @@ private class CurrencyConversionFutureTest {
     CurrencyConversionFuture.fetchAndStoreExchangeRates();
     Test.stopTest();
 
-    Cur_OfficialRate_USD__c curOfficialRateUSD = Cur_OfficialRate_USD__c.getOrgDefaults();
+    Exchange_Rate__c rateUSD = [
+      SELECT Coefficient__c
+      FROM Exchange_Rate__c
+      WHERE Name = 'USD'
+      LIMIT 1
+    ];
 
-    System.assertEquals(2.0, curOfficialRateUSD.value__c);
+    System.assertEquals(2.0, rateUSD.Coefficient__c);
   }
 }

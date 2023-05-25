@@ -10,7 +10,6 @@ import Submit from '@salesforce/label/c.Submit';
 
 
 export default class CreateCase extends LightningElement {
-
     label = {   
         AskQuestion,
         YourName,

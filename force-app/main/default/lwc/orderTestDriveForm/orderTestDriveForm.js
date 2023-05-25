@@ -42,7 +42,7 @@ export default class OrderTestDriveForm extends LightningModal {
                 console.error('Error creating request:', error);
             });
 
-            this.close('okay');
+        this.close('okay');
     }    
 
 }

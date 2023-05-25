@@ -6,34 +6,22 @@ export default class AutomotiveCentersList extends LightningElement {
     label = {
         AutomotiveCenters
     };
-    @wire(getAllAutomotiveCenters) automotiveCenters;
-    error;
-    connectedCallback() {
-        this.loadAutomotiveCenters();
+
+    centerData;
+
+    @wire(getAllAutomotiveCenters) 
+    wiredAutomotiveCenters({error, data}) {
+        if (data) {
+            this.centerData = data.map((center) => ({
+                id: center.Id,
+                city: center.City__c,
+                name: center.Name,
+                type: center.Type__c,
+                phone: center.Phone__c,
+                workingHours: center.Working_Hours__c
+            }));
+        } else if (error) {
+            console.error(error);
+        }
     }
-
-    loadAutomotiveCenters() {
-        getAllAutomotiveCenters()
-            .then(result => {
-                this.automotiveCenters = result;
-                this.error = undefined;
-            })
-            .catch(error => {
-                this.error = error;
-                this.automotiveCenters = undefined;
-            });
-    }
-
-    handleSearchTermChange(event) {
-		window.clearTimeout(this.delayTimeout);
-		const searchTerm = event.target.value;
-		this.delayTimeout = setTimeout(() => {
-			this.searchTerm = searchTerm;
-		}, 300);
-	}
-
-    get hasResults() {
-        return (this.automotiveCenters.length > 0);
-    }
-
 }

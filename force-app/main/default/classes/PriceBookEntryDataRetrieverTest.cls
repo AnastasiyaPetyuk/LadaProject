@@ -15,10 +15,7 @@ private class PriceBookEntryDataRetrieverTest {
     );
     insert testProduct;
 
-    Pricebook2 standardPricebook = new Pricebook2(
-      Id = Test.getStandardPricebookId(),
-      IsActive = true
-    );
+    Pricebook2 standardPricebook = new Pricebook2(Id = Test.getStandardPricebookId(),IsActive = true);
     update standardPricebook;
 
     standardPricebook = [
@@ -37,32 +34,14 @@ private class PriceBookEntryDataRetrieverTest {
     insert testPricebookEntry1;
 
     Test.startTest();
-    List<PricebookEntry> priceBookEntries = PriceBookEntryDataRetriever.getAllPriceBookEntriesByProductName(
-      productName
-    );
+    List<PricebookEntry> priceBookEntries = PriceBookEntryDataRetriever.getAllPriceBookEntriesByProductName(productName);
     Test.stopTest();
 
-    System.assertEquals(
-      1,
-      priceBookEntries.size(),
-      'One active price book entry should be returned'
-    );
+    System.assertEquals(1, priceBookEntries.size(), 'One active price book entry should be returned');
     PricebookEntry retrievedEntry = priceBookEntries[0];
-    System.assertEquals(
-      'Test Product',
-      retrievedEntry.Product2.Name,
-      'Product name should match'
-    );
-    System.assertEquals(
-      true,
-      retrievedEntry.IsActive,
-      'Price book entry should be active'
-    );
-    System.assertEquals(
-      1000,
-      retrievedEntry.UnitPrice,
-      'Unit price should match'
-    );
+    System.assertEquals('Test Product', retrievedEntry.Product2.Name, 'Product name should match');
+    System.assertEquals(true, retrievedEntry.IsActive, 'Price book entry should be active');
+    System.assertEquals(1000, retrievedEntry.UnitPrice, 'Unit price should match');
   }
 
   @IsTest
@@ -82,10 +61,7 @@ private class PriceBookEntryDataRetrieverTest {
     );
     insert testProduct;
 
-    Pricebook2 standardPricebook = new Pricebook2(
-      Id = Test.getStandardPricebookId(),
-      IsActive = true
-    );
+    Pricebook2 standardPricebook = new Pricebook2(Id = Test.getStandardPricebookId(), IsActive = true);
     update standardPricebook;
 
     standardPricebook = [
@@ -104,22 +80,11 @@ private class PriceBookEntryDataRetrieverTest {
     insert testPricebookEntry1;
 
     Test.startTest();
-    List<PricebookEntry> priceBookEntries = PriceBookEntryDataRetriever.findPricebookEntry(
-      standardPricebook.Id,
-      testProduct.Id
-    );
+    List<PricebookEntry> priceBookEntries = PriceBookEntryDataRetriever.findPricebookEntry(standardPricebook.Id, testProduct.Id);
     Test.stopTest();
 
-    System.assertEquals(
-      1,
-      priceBookEntries.size(),
-      'One price book entry should be returned'
-    );
+    System.assertEquals(1, priceBookEntries.size(), 'One price book entry should be returned');
     PricebookEntry retrievedEntry = priceBookEntries[0];
-    System.assertEquals(
-      testPricebookEntry1.Id,
-      retrievedEntry.Id,
-      'Retrieved entry ID should match the inserted entry ID'
-    );
+    System.assertEquals(testPricebookEntry1.Id, retrievedEntry.Id, 'Retrieved entry ID should match the inserted entry ID');
   }
 }

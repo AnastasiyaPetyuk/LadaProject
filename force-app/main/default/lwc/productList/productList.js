@@ -64,7 +64,6 @@ export default class ProductList extends LightningElement {
         this.selectedCurrency = objPayload;
     }
       
-
     async handleShowModal(event) {
         console.log('selectedCurrency handle modal: ' + this.selectedCurrency);
         const productId = event.target.dataset.id;

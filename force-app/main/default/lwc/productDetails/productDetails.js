@@ -1,4 +1,4 @@
-import { api, wire} from 'lwc';
+import { api} from 'lwc';
 import LightningModal from 'lightning/modal';
 import generatePDF from '@salesforce/apex/PDFController.generatePDF';
 
@@ -13,7 +13,6 @@ export default class ProductDetails extends LightningModal {
   @api carCheckpoint;
   @api carDriveUnit;
   @api currency;
-  
 
   handleOkay() {
     this.close('okay');

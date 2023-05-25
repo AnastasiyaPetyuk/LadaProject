@@ -4,7 +4,6 @@ import createCase from '@salesforce/apex/CaseController.createCase';
 
 export default class BuyAutoForm extends LightningModal {
     @api carName;
-
     @track name
     @track email; 
     @track phone;

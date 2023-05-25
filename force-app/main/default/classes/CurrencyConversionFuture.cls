@@ -9,20 +9,20 @@ public with sharing class CurrencyConversionFuture {
     HttpResponse response = new Http().send(request);
 
     if (response.getStatusCode() == 200) {
-        List<Object> exchangeRates = (List<Object>) JSON.deserializeUntyped(
+      Map<String, Object> exchangeRate = (Map<String, Object>) JSON.deserializeUntyped(
         response.getBody()
       );
 
-      Cur_OfficialRate_USD__c curOfficialRateUSD = Cur_OfficialRate_USD__c.getOrgDefaults();
+      Exchange_Rate__c rateUSD = [
+        SELECT Coefficient__c
+        FROM Exchange_Rate__c
+        WHERE Name = 'USD'
+        LIMIT 1
+      ];
 
-      for (Object rate : exchangeRates) {
-        Map<String, Object> rateMap = (Map<String, Object>) rate;
-        Decimal conversionRate = (Decimal) rateMap.get('Cur_OfficialRate');
+      rateUSD.Coefficient__c = Decimal.valueOf(String.valueOf(exchangeRate.get('Cur_OfficialRate')));
+      update rateUSD;
 
-        curOfficialRateUSD.value__c = conversionRate;
-      }
-
-      update curOfficialRateUSD;
     } else {
       System.debug(
         'API Error: ' + response.getStatusCode() + ' ' + response.getStatus()

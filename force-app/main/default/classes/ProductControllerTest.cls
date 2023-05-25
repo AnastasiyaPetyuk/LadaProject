@@ -20,30 +20,15 @@ private class ProductControllerTest {
       Image_URL__c = 'some url',
       Description = 'Test Description'
     );
-    List<Product2> testProducts = new List<Product2>{
-      testProduct1,
-      testProduct2
-    };
+    List<Product2> testProducts = new List<Product2>{testProduct1,testProduct2};
     insert testProducts;
 
     Test.startTest();
     List<Product2> productList = ProductController.getProductList();
     Test.stopTest();
 
-    System.assertEquals(
-      2,
-      productList.size(),
-      'Two products should be returned'
-    );
-    System.assertEquals(
-      'Test Product1',
-      productList[0].Name,
-      'First product name should match'
-    );
-    System.assertEquals(
-      'Test Product2',
-      productList[1].Name,
-      'Second product name should match'
-    );
+    System.assertEquals(2, productList.size(), 'Two products should be returned');
+    System.assertEquals('Test Product1', productList[0].Name, 'First product name should match');
+    System.assertEquals('Test Product2', productList[1].Name, 'Second product name should match');
   }
 }
