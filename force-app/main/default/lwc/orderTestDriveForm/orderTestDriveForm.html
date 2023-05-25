@@ -1,0 +1,16 @@
+<template>
+    <lightning-modal-header label={header}></lightning-modal-header>
+    <lightning-modal-body>
+            <lightning-layout> 
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <lightning-input label={labelLastName} value={lastName} onchange={handleLastNameChange}></lightning-input>
+                    <lightning-input label={labelFirstName} value={firstName} onchange={handleFirstNameChange}></lightning-input>
+                    <lightning-input label={labelEmail} type="email" value={email} onchange={handleEmailChange}></lightning-input>
+                    <lightning-input label={labelPhone} type="tel" value={phone} onchange={handlePhoneChange}></lightning-input>
+                </lightning-layout-item>
+            </lightning-layout> 
+    </lightning-modal-body>
+    <lightning-modal-footer>
+            <lightning-button variant="brand" label={labelSubmit} onclick={handleSave}></lightning-button>
+    </lightning-modal-footer>
+</template>
